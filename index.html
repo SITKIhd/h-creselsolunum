@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hücresel Solunum - Biyoloji Grup Ödevi</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+</head>
+
+<body>
+    <canvas id="particle-canvas"></canvas>
+
+    <div class="container">
+        <!-- HOME PAGE -->
+        <div id="home-page" class="section active">
+            <div class="home-image-container">
+                <img src="elma.png" alt="Oksijenli Solunum" title="Oksijenli Solunum">
+            </div>
+
+            <div class="center-controls">
+                <h1 class="title">Hücresel Solunum</h1>
+                <button class="btn" onclick="navigateTo('aerobic-sequence')">Oksijenli Solunum</button>
+                <button class="btn" onclick="navigateTo('anaerobic-page')">Oksijensiz Solunum</button>
+                <button class="btn" onclick="openModal()">Emeği Geçenler</button>
+            </div>
+
+            <div class="home-image-container">
+                <img src="os.png" alt="Oksijensiz Solunum" title="Oksijensiz Solunum">
+            </div>
+        </div>
+
+        <!-- Group Members Modal -->
+        <div id="members-modal" class="modal hidden">
+            <div class="modal-content">
+                <span class="close-btn" onclick="closeModal()">&times;</span>
+                <h2>10/C Sınıfı Grup Ödevi</h2>
+                <ul class="members-list">
+                    <li>1 - Abdullah Baha Güney - 143</li>
+                    <li>2 - Muhammet Sıtkı Karabağ - 102</li>
+                    <li>3 - Abdullah Emin Gündoğdu - 107</li>
+                    <li>4 - Kerim Tunahan Tuna - 189</li>
+                    <li>5 - Mustafa Emir Barut - 175</li>
+                    <li>6 - Ahmet Yasin Deveci - 157</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- AEROBIC RESPIRATION SEQUENCE (Container) -->
+        <div id="aerobic-sequence" class="section" style="display:none; flex-direction: column;">
+
+            <!-- Step 1: Human (Zoom to Chest) -->
+            <div id="step-human" class="aerobic-step">
+                <img src="human.png" class="zoom-target zoom-trigger" alt="İnsan Anatomisi">
+                <div class="info-box" style="position: absolute; top: 10%; right: 10%;">
+                    <h2>Oksijenli Solunum</h2>
+                    <p>Oksijenli solunum, besinlerdeki kimyasal bağ enerjisinin hücre içinde oksijen kullanılarak açığa
+                        çıkarılması olayıdır. Bu süreçte glikoz yıkılır, ATP üretilir. Şimdi hücrenin içine doğru bir
+                        yolculuğa çıkalım.</p>
+                    <p style="font-size: 0.9em; margin-top: 10px;">(Devam etmek için resme tıklayın)</p>
+                </div>
+            </div>
+
+            <!-- Step 2: Glycolysis (Mitochondria BG) -->
+            <div id="step-glycolysis" class="aerobic-step hidden">
+                <img src="mitokondri.png" class="zoom-target zoom-trigger" alt="Mitokondri">
+                <div class="info-box" style="position: absolute; top: 15%; left: 10%;">
+                    <h2>Glikoliz</h2>
+                    <p>Yer: Sitoplazma (Mitokondriye girmeden hemen önce)</p>
+                    <p>1 Glikoz (6C) → 2 Pirüvat (3C)</p>
+                    <p>Harcanan: 2 ATP</p>
+                    <p>Üretilen: 4 ATP (Net Kazanç: 2 ATP)</p>
+                    <p>2 NAD⁺ → 2 NADH + 2H⁺ (ETS'ye gider)</p>
+                </div>
+            </div>
+
+            <!-- Step 3: Pyruvate Oxidation (Focused Mitochondria) -->
+            <div id="step-oxidation" class="aerobic-step hidden">
+                <img src="mitokondri_focused.png" class="zoom-target zoom-trigger" alt="Mitokondri Detay">
+                <div class="info-box" style="position: absolute; bottom: 10%; right: 15%;">
+                    <h2>Pirüvat Oksidasyonu</h2>
+                    <p>2 Pirüvat → 2 Asetil-CoA</p>
+                    <p>Açığa çıken: 2 CO₂</p>
+                    <p>2 NAD⁺ → 2 NADH + 2H⁺ (ETS'ye gider)</p>
+                    <div
+                        style="margin-top: 10px; border-top: 1px dashed #3e2723; padding-top: 5px; font-style: italic; font-size: 0.9em;">
+                        "Bu olay kitabımızda Krebs döngüsünün içerisinde geçiyordu fakat hocam siz ayrı işlediği için
+                        bizde ayrı şekilde ele almak istedik."
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 4: Krebs Cycle (Matrix BG + Krebs Overlay) -->
+            <div id="step-krebs" class="aerobic-step hidden"
+                style="background-image: url('matriks.png'); background-size: cover;">
+                <img src="krebs.png" class="krebs-cycle-img zoom-trigger" alt="Krebs Döngüsü">
+                <div class="info-box" style="position: absolute; top: 5%; left: 5%;">
+                    <h2>Krebs Döngüsü</h2>
+                    <p>Yer: Mitokondri Matriksi</p>
+                    <p>2 Asetil-CoA (2C) döngüye girer.</p>
+                    <p>2C + 4C (Okzaloasetat) → 6C (Sitrik Asit)</p>
+                    <p>Döngüde karbonlar ayrılarak CO₂ oluşur.</p>
+                    <h3>Ürünler (2 Asetil-CoA için):</h3>
+                    <p>4 CO₂</p>
+                    <p>6 NADH</p>
+                    <p>2 FADH₂</p>
+                    <p>2 ATP</p>
+                    <p style="font-size: 0.9em; color: #8b0000; margin-top: 10px; font-weight: bold;">
+                        ⚠️ Resime yalnızca 1 kere tıklayıp beklemeniz yeterli olacaktır. Eğer çift tıklarsanız bir
+                        sonraki sayfaya geçebilir.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Step 5: ETS (Cristae BG + ETS Overlay) -->
+            <div id="step-ets" class="aerobic-step hidden"
+                style="background-image: url('krista.png'); background-size: cover;">
+                <img src="ETS.png" class="ets-img zoom-trigger" alt="ETS">
+                <div class="info-box" style="position: absolute; bottom: 5%; left: 8%; width: 60%;">
+                    <h2>ETS (Elektron Taşıma Sistemi)</h2>
+                    <p>Yer: Mitokondri Kristası</p>
+                    <p>NADH ve FADH₂'den gelen elektronlar oksijene taşınır.</p>
+                    <p>Protonlar (H⁺) pompalanır ve ATP sentez için enerji oluşturur.</p>
+                    <p>Son elektron alıcısı: Oksijen (½ O₂ + 2H⁺ + 2e⁻ → H₂O)</p>
+                    <p><strong>En yüksek ATP üretimi buradadır: 26-28 ATP</strong></p>
+                    <p style="font-size: 0.9em; color: #8b0000; margin-top: 10px; font-weight: bold;">
+                        ⚠️ Resime yalnızca 1 kere tıklayıp beklemeniz yeterli olacaktır. Eğer çift tıklarsanız bir
+                        sonraki sayfaya geçebilir.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Step 6: Summary Table -->
+            <div id="step-summary" class="aerobic-step hidden"
+                style="background-image: url('GENEL.png'); background-size: cover;">
+                <div class="info-box" style="max-height: 80vh; overflow-y: auto;">
+                    <h2>Oksijenli Solunum Özeti</h2>
+                    <div style="text-align: left;">
+                        <p><strong>Yerleşim (Prokaryotlarda hepsi sitoplazma/zar):</strong></p>
+                        <ul>
+                            <li>Glikoliz: Sitoplazma</li>
+                            <li>Pirüvat Oks.: Mitokondri Matriksi</li>
+                            <li>Krebs: Mitokondri Matriksi</li>
+                            <li>ETS: Krista (İç Zar)</li>
+                        </ul>
+                        <hr style="border: 1px dashed #3e2723;">
+                        <p><strong>Ürünler:</strong></p>
+                        <p>1️⃣ Glikoliz: Net 2 ATP, 2 NADH, 2 Pirüvat</p>
+                        <p>2️⃣ Pirüvat Oks.: 2 NADH, 2 CO₂, 2 Asetil-CoA</p>
+                        <p>3️⃣ Krebs: 2 ATP, 6 NADH, 2 FADH₂, 4 CO₂</p>
+                        <p>4️⃣ ETS: ~26-28 ATP, H₂O</p>
+                        <h3>Toplam: ~30-32 ATP</h3>
+                    </div>
+                    <button class="btn" onclick="navigateTo('home-page')" style="margin-top: 20px;">Ana Sayfaya
+                        Dön</button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ANAEROBIC RESPIRATION PAGE -->
+        <div id="anaerobic-page" class="section" style="display:none;">
+            <div class="content-block">
+                <h1>Oksijensiz Solunum (Fermantasyon)</h1>
+                <p>Oksijensiz solunum/Fermantasyon, oksijenin olmadığı durumlarda hücrenin enerji üretmesini sağlar.</p>
+                <p>Oksijen kullanılmaz | Mitokondri kullanılmaz | Yer: Sitoplazma</p>
+
+                <h2>Aşamalar</h2>
+                <div style="text-align: left;">
+                    <h3>1️⃣ Glikoliz</h3>
+                    <p>Tüm canlılarda ortaktır. Glikoz parçalanır, net 2 ATP üretilir, NADH oluşur.</p>
+                    <p><em>Önemli: NAD⁺ biterse glikoliz durur!</em></p>
+
+                    <h3>2️⃣ Fermantasyon</h3>
+                    <p>Amaç enerji üretmek değil, NADH'ı tekrar NAD⁺'a çevirerek glikolizin devamını sağlamaktır.</p>
+
+                    <h4>🔹 Laktik Asit Fermantasyonu</h4>
+                    <p>Pirüvat → Laktik Asit (CO₂ çıkışı YOK)</p>
+                    <p>İnsan kas hücreleri, yoğurt bakterileri.</p>
+
+                    <h4>🔹 Alkol Fermantasyonu</h4>
+                    <p>Pirüvat → Etil Alkol + CO₂ (CO₂ çıkışı VAR)</p>
+                    <p>Maya mantarları.</p>
+                </div>
+            </div>
+
+            <div class="content-block">
+                <h2>Karşılaştırma: Oksijenli vs Oksijensiz</h2>
+                <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 300px;">
+                        <h3>🔹 BENZERLİKLER</h3>
+                        <ul style="text-align: left;">
+                            <li>İkisinde de ATP üretilir.</li>
+                            <li>Glikoliz ortak basamaktır.</li>
+                            <li>Glikoz substrattır.</li>
+                            <li>Enzimler kullanılır.</li>
+                        </ul>
+                    </div>
+                    <div style="flex: 1; min-width: 300px;">
+                        <h3>🔸 FARKLILIKLAR</h3>
+                        <table class="comparison-table">
+                            <tr>
+                                <th>Özellik</th>
+                                <th>Oksijenli</th>
+                                <th>Oksijensiz</th>
+                            </tr>
+                            <tr>
+                                <td>Oksijen</td>
+                                <td>Kullanılır</td>
+                                <td>Kullanılmaz</td>
+                            </tr>
+                            <tr>
+                                <td>Yer</td>
+                                <td>Sitoplazma + Mitokondri</td>
+                                <td>Sadece Sitoplazma</td>
+                            </tr>
+                            <tr>
+                                <td>Net ATP</td>
+                                <td>30-32</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td>Son Ürün</td>
+                                <td>CO₂ + H₂O</td>
+                                <td>Laktik asit / Etil alkol</td>
+                            </tr>
+                            <tr>
+                                <td>ETS</td>
+                                <td>Var</td>
+                                <td>Yok</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <button class="btn" onclick="navigateTo('home-page')" style="margin-top: 30px;">Ana Sayfaya Dön</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
